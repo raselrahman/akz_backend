@@ -16,8 +16,8 @@ const db = mysql.createConnection({
 
 
 // ✅ API route
-app.post("/login", (req, res) => {
-  const { username, password } = req.body;
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
 
   db.query(
     "SELECT * FROM users WHERE username = ? AND password = ?",
