@@ -105,6 +105,10 @@ app.get("/students/search", (req, res) => {
   );
 });
 
+
+app.get("/", (req, res) => {
+  res.send("Backend is running! ✅");
+});
 // -------------------------------
 // Start server
 // -------------------------------
