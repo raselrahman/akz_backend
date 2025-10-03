@@ -13,7 +13,7 @@ app.use(express.json());
 const db = mysql.createConnection({
   host: "gateway01.eu-central-1.prod.aws.tidbcloud.com",
   user: "3AoNAwB1XjAHKub.root",
-  password: "<YOUR_PASSWORD>", // <-- replace with your TiDB password
+  password: "", // <-- replace with your TiDB password
   database: "test",
   port: 4000,
   ssl: { rejectUnauthorized: true } // required for TiDB Serverless
