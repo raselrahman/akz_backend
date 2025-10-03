@@ -1,20 +1,32 @@
+// server.js
 import express from "express";
 import mysql from "mysql2";
 import cors from "cors";
 
 const app = express();
-app.use(cors()); // adjust origin for Netlify if needed
+app.use(cors()); // allow requests from any origin (adjust for Netlify if needed)
 app.use(express.json());
 
-// MySQL connection
+// -------------------------------
+// Hardcoded TiDB Serverless MySQL connection
+// -------------------------------
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "",
-  database: process.env.DB_NAME || "test"
+  host: "gateway01.eu-central-1.prod.aws.tidbcloud.com",
+  user: "3AoNAwB1XjAHKub.root",
+  password: "<YOUR_PASSWORD>", // <-- replace with your TiDB password
+  database: "test",
+  port: 4000,
+  ssl: { rejectUnauthorized: true } // required for TiDB Serverless
 });
 
-// Login route
+db.connect((err) => {
+  if (err) console.error("DB connection failed:", err);
+  else console.log("Connected to TiDB Serverless!");
+});
+
+// -------------------------------
+// Login API
+// -------------------------------
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -32,7 +44,11 @@ app.post("/login", (req, res) => {
   );
 });
 
-// CRUD API for students
+// -------------------------------
+// CRUD API for Students
+// -------------------------------
+
+// Get all students
 app.get("/students", (req, res) => {
   db.query("SELECT * FROM students", (err, results) => {
     if (err) return res.status(500).json({ error: "Server error" });
@@ -40,6 +56,7 @@ app.get("/students", (req, res) => {
   });
 });
 
+// Add a new student
 app.post("/students", (req, res) => {
   const { name, year, level, address, contact } = req.body;
   db.query(
@@ -52,6 +69,7 @@ app.post("/students", (req, res) => {
   );
 });
 
+// Update a student
 app.put("/students/:id", (req, res) => {
   const { id } = req.params;
   const { name, year, level, address, contact } = req.body;
@@ -65,6 +83,7 @@ app.put("/students/:id", (req, res) => {
   );
 });
 
+// Delete a student
 app.delete("/students/:id", (req, res) => {
   const { id } = req.params;
   db.query("DELETE FROM students WHERE id=?", [id], (err) => {
@@ -73,6 +92,7 @@ app.delete("/students/:id", (req, res) => {
   });
 });
 
+// Search students by name or ID
 app.get("/students/search", (req, res) => {
   const { query } = req.query;
   db.query(
@@ -85,6 +105,8 @@ app.get("/students/search", (req, res) => {
   );
 });
 
+// -------------------------------
 // Start server
+// -------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
