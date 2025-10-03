@@ -4,7 +4,9 @@ import mysql from "mysql2";
 import cors from "cors";
 
 const app = express();
-app.use(cors()); // allow requests from any origin (adjust for Netlify if needed)
+app.use(cors({
+  origin: "https://raselbaust3200.netlify.app"  // frontend URL
+}));
 app.use(express.json());
 
 // -------------------------------
