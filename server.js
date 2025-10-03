@@ -3,21 +3,20 @@ import mysql from "mysql2";
 import cors from "cors";
 
 const app = express();
-app.use(cors());
+app.use(cors()); // adjust origin for Netlify if needed
 app.use(express.json());
 
-// ✅ MySQL connection
+// MySQL connection
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",       // ✅ your MySQL username
-  password: "",       // ✅ your MySQL password (set it if you have one)
-  database: "test"    // ✅ the database you just created
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "",
+  database: process.env.DB_NAME || "test"
 });
 
-
-// ✅ API route
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+// Login route
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
 
   db.query(
     "SELECT * FROM users WHERE username = ? AND password = ?",
@@ -33,13 +32,7 @@ app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
   );
 });
 
-
-
-// -------------------------------
-// CRUD API for Students
-// -------------------------------
-
-// Get all students
+// CRUD API for students
 app.get("/students", (req, res) => {
   db.query("SELECT * FROM students", (err, results) => {
     if (err) return res.status(500).json({ error: "Server error" });
@@ -47,7 +40,6 @@ app.get("/students", (req, res) => {
   });
 });
 
-// Add a new student
 app.post("/students", (req, res) => {
   const { name, year, level, address, contact } = req.body;
   db.query(
@@ -60,7 +52,6 @@ app.post("/students", (req, res) => {
   );
 });
 
-// Update a student
 app.put("/students/:id", (req, res) => {
   const { id } = req.params;
   const { name, year, level, address, contact } = req.body;
@@ -74,7 +65,6 @@ app.put("/students/:id", (req, res) => {
   );
 });
 
-// Delete a student
 app.delete("/students/:id", (req, res) => {
   const { id } = req.params;
   db.query("DELETE FROM students WHERE id=?", [id], (err) => {
@@ -83,7 +73,6 @@ app.delete("/students/:id", (req, res) => {
   });
 });
 
-// Optional: Search students by name or ID
 app.get("/students/search", (req, res) => {
   const { query } = req.query;
   db.query(
@@ -96,6 +85,6 @@ app.get("/students/search", (req, res) => {
   );
 });
 
-
-// ✅ start server
-app.listen(5000, () => console.log("Backend running at http://localhost:5000"));
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
