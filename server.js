@@ -109,10 +109,10 @@ app.get("/students/search", (req, res) => {
 
 
 app.get("/", (req, res) => {
-  res.send("Backend is running! ✅");
+  res.send("Backend is running! hi ✅");
 });
 // -------------------------------
 // Start server
 // -------------------------------
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000|| 4000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
