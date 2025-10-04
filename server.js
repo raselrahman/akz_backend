@@ -4,9 +4,11 @@ import mysql from "mysql2";
 import cors from "cors";
 
 const app = express();
+//app.use(cors({ origin: "*" }));
 app.use(cors({
   origin: ["http://localhost:5173", "https://raselbaust3200.netlify.app"]
 }));
+//
 
 
 app.use(express.json());
