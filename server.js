@@ -15,31 +15,31 @@ app.use(express.json());
 // -------------------------------
 // Hardcoded TiDB Serverless MySQL connection
 // -------------------------------
-// const db = mysql.createConnection({
-//   host: "gateway01.eu-central-1.prod.aws.tidbcloud.com",
-//   user: "3AoNAwB1XjAHKub.root",
-//   password: "ZxgrpJfH1B4u5SQp", // <-- replace with your TiDB password
-//   database: "test",
-//   port: 4000,
-//   ssl: { rejectUnauthorized: true } // required for TiDB Serverless
-// });
-// db.connect((err) => {
-//   if (err) console.error("DB connection failed:", err);
-//   else console.log("Connected to TiDB Serverless!");
-// });
-
-
 const db = mysql.createConnection({
-  host: "mysql.railway.internal",       // MYSQLHOST
-  user: "root",                          // MYSQLUSER
-  password: "aQJYRRrzPItMRgbKmqgRTedZBxFqKZIA", // MYSQLPASSWORD
-  database: "railway",                   // MYSQLDATABASE
-  port: 3306                             // MYSQLPORT
+  host: "gateway01.eu-central-1.prod.aws.tidbcloud.com",
+  user: "3AoNAwB1XjAHKub.root",
+  password: "ZxgrpJfH1B4u5SQp", // <-- replace with your TiDB password
+  database: "test",
+  port: 4000,
+  ssl: { rejectUnauthorized: true } // required for TiDB Serverless
 });
 db.connect((err) => {
   if (err) console.error("DB connection failed:", err);
-  else console.log("Connected to Railway MySQL!");
+  else console.log("Connected to TiDB Serverless!");
 });
+
+
+// const db = mysql.createConnection({
+//   host: "mysql.railway.internal",       // MYSQLHOST
+//   user: "root",                          // MYSQLUSER
+//   password: "aQJYRRrzPItMRgbKmqgRTedZBxFqKZIA", // MYSQLPASSWORD
+//   database: "railway",                   // MYSQLDATABASE
+//   port: 3306                             // MYSQLPORT
+// });
+// db.connect((err) => {
+//   if (err) console.error("DB connection failed:", err);
+//   else console.log("Connected to Railway MySQL!");
+// });
 
 
 // -------------------------------
