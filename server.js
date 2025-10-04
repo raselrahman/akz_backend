@@ -113,5 +113,5 @@ app.get("/", (req, res) => {
 // -------------------------------
 // Start server
 // -------------------------------
-const PORT = process.env.PORT || 5000|| 4000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
